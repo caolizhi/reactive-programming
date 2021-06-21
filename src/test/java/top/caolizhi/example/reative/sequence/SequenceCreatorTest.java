@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 class SequenceCreatorTest {
 
 	/**
+	*
+	*
 	* 问题：线程执行顺序不对！！！！！！
 	**/
 	@Test
@@ -33,7 +35,24 @@ class SequenceCreatorTest {
 		thread2.join();
 
 		assertThat(list).containsExactly(0, 1, 1, 0, 1, 1, 2); // 理论上输出的顺序无法保证一致
+	}
 
+	/**
+	 * 异步：单个线程
+	 **/
+	@Test
+	void pushNumbersTest() throws InterruptedException {
+		// 产生数组
+		SequenceGenerator sequenceGenerator = new SequenceGenerator();
+		List<Integer> sequence1 = sequenceGenerator.generateFibonacciWithTuples().take(3).collectList().block();
+		SequenceCreator sequenceCreator = new SequenceCreator();
+		List<Integer> list = new ArrayList<>();
 
+		Thread thread = new Thread(() -> sequenceCreator.consumer.accept(sequence1));
+		sequenceCreator.pushNumbers().log().subscribe(list::add);
+
+		thread.start();
+
+		assertThat(list).containsExactly(0, 1, 1); // 理论上输出的顺序无法保证一致
 	}
 }

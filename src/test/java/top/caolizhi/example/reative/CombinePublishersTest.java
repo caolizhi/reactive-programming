@@ -130,7 +130,7 @@ public class CombinePublishersTest {
 	*     time(ms): 300  500  600  900  1000
 	 * even number:      ---2---------------4--|
 	 *  odd number: ---1---------3----5--|
-	 * **/
+    **/
 	@Test
 	public void mergeDelayTest() {
 		Flux<Integer> mergeDelay = Flux.merge(

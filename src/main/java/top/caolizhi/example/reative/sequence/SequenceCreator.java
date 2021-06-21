@@ -17,10 +17,21 @@ public class SequenceCreator {
 	public Consumer<List<Integer>> consumer;
 
 	/**
-	* 无状态，onNext 可以调用很多次，
-	**/
+	 * 异步：多个线程
+	 * 无状态，onNext 可以调用很多次，多个线程
+	 *
+	 **/
 	public Flux<Integer> createNumbers() {
 		return Flux.create((FluxSink<Integer> sink) -> {
+			SequenceCreator.this.consumer = items -> items.forEach(sink::next);
+		});
+	}
+
+	/**
+	* 异步：单个线程
+	**/
+	public Flux<Integer> pushNumbers() {
+		return Flux.push((FluxSink<Integer> sink) -> {
 			SequenceCreator.this.consumer = items -> items.forEach(sink::next);
 		});
 	}
