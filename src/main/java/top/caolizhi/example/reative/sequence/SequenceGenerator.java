@@ -6,7 +6,7 @@ import reactor.util.function.Tuples;
 import top.caolizhi.example.reative.dto.FibonacciState;
 
 /**
- *@Description 同步动态生成序列
+ *@Description 同步动态生成序列，当前线程（main）完成
  *@Author 宝子哥
  *@Date 2021/6/18 10:25
  *@Version 1.0
