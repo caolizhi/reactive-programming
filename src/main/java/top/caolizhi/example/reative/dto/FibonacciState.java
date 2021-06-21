@@ -9,17 +9,16 @@ import lombok.Setter;
 /**
  *@Description TODO
  *@Author 宝子哥
- *@Date 2021/6/16 9:43
+ *@Date 2021/6/18 13:24
  *@Version 1.0
  **/
-@Getter
-@Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Person {
+@Setter
+@Getter
+@Builder
+public class FibonacciState {
 
-	private String id;
-	private String name;
-
+	private int former;
+	private int latter;
 }

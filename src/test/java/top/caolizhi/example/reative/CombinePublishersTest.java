@@ -11,7 +11,7 @@ import reactor.test.StepVerifier;
 
 /**
  *@Description 合并 publisher
- *@Author 小志哥
+ *@Author 宝子哥
  *@Date 2021/6/17 16:05
  *@Version 1.0
  **/

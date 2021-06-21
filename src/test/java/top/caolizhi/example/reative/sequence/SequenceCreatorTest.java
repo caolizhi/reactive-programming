@@ -1,0 +1,39 @@
+package top.caolizhi.example.reative.sequence;
+
+import static org.assertj.core.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+class SequenceCreatorTest {
+
+	/**
+	* 问题：线程执行顺序不对！！！！！！
+	**/
+	@Test
+	void createNumbersTest() throws InterruptedException {
+		// 产生两个数组
+		SequenceGenerator sequenceGenerator = new SequenceGenerator();
+		List<Integer> sequence1 = sequenceGenerator.generateFibonacciWithTuples().take(3000).collectList().block();
+		List<Integer> sequence2 = sequenceGenerator.generateFibonacciWithTuples().take(4000).collectList().block();
+		SequenceCreator sequenceCreator = new SequenceCreator();
+		List<Integer> list = new ArrayList<>();
+
+		Thread thread1 = new Thread(() -> sequenceCreator.consumer.accept(sequence1));
+
+		Thread thread2 = new Thread(() -> sequenceCreator.consumer.accept(sequence2));
+		sequenceCreator.createNumbers().log().subscribe(list::add);
+		thread1.start();
+		System.out.println("thead 1 name is: " + thread1.getName());
+		thread2.start();
+		System.out.println("thead 2 name is: " + thread2.getName());
+		thread1.join();
+		thread2.join();
+
+		assertThat(list).containsExactly(0, 1, 1, 0, 1, 1, 2); // 理论上输出的顺序无法保证一致
+
+
+	}
+}
