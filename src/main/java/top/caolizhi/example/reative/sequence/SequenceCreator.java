@@ -28,6 +28,17 @@ public class SequenceCreator {
 	}
 
 	/**
+	 * cancel 发生在 dispose 之前
+	**/
+	public Flux<Integer> createAndCancelNumbers() {
+		return Flux.create((FluxSink<Integer> sink) -> {
+			SequenceCreator.this.consumer = items -> items.forEach(sink::next);
+			sink.onDispose(() -> System.out.println("完成或关闭"))
+				.onCancel(() -> System.out.println("取消了"));
+		});
+	}
+
+	/**
 	* 异步：单个线程
 	**/
 	public Flux<Integer> pushNumbers() {
