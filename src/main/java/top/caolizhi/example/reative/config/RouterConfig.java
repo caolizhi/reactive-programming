@@ -21,6 +21,19 @@ public class RouterConfig {
 
 	@Bean
 	public RouterFunction<ServerResponse> routerFunction(PersonHandler personHandler) {
-		return RouterFunctions.route(GET("02").and(accept(MediaType.APPLICATION_JSON)), personHandler::route1);
+
+		RouterFunction<ServerResponse> route = RouterFunctions.route(
+			GET("04").and(accept(MediaType.APPLICATION_JSON)), personHandler::route1)
+			.andRoute(GET("05"), personHandler::route1);
+
+		return RouterFunctions.route()
+			.path("/person",
+				builder -> builder
+					.GET("/{id}", accept(MediaType.APPLICATION_JSON), personHandler::route1)
+					.GET(accept(MediaType.APPLICATION_JSON), personHandler::route1)
+					.POST("/person", personHandler::route2)
+				)
+			.add(route)
+			.build();
 	}
 }

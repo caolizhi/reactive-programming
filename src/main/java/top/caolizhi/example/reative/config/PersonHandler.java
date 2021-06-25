@@ -24,4 +24,10 @@ public class PersonHandler {
 			.body(BodyInserters.fromValue(Person.builder().name("caolizhi").id("cn17911").build()));
 	}
 
+	public Mono<ServerResponse> route2(ServerRequest request) {
+		return ServerResponse.accepted()
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(BodyInserters.fromValue("created successfully !"));
+	}
+
 }
